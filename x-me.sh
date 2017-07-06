@@ -1,13 +1,20 @@
 #!/bin/bash
 
-make
-insmod bug1
+echo "======================================================="
 
-gcc payload.c -o payload
+rmmod bug1
+make
+insmod bug1.ko
 
 echo "======================================================="
 
-strace ./payload
+gcc poc1.c -o poc1
+
+echo "======================================================="
+
+strace ./poc1
+
+echo "======================================================="
 
 tail -n 40 /var/log/messages
 

